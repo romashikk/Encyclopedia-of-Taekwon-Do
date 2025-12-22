@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Энциклопедия Тхэквондо - Навигатор</title>
+    <style>
+        :root {
+            --bg-color: #f0f2f5;
+            --card-bg: #ffffff;
+            --text-main: #2c3e50;
+            --text-muted: #6c757d;
+            
+            /* Цвета полезности */
+            --combat-color: #d63031; /* Красный - Боевая база */
+            --form-color: #0984e3;   /* Синий - Тули/Форма */
+            --theory-color: #636e72; /* Серый - Теория */
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.5;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e272e, #34495e);
+            color: white;
+            text-align: center;
+            padding: 2.5rem 1rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        header h1 { margin: 0; font-size: 2.2rem; text-transform: uppercase; letter-spacing: 1px; }
+        header p { opacity: 0.8; margin-top: 0.5rem; max-width: 600px; margin-left: auto; margin-right: auto; }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px 40px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            border-top: 4px solid transparent;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 20px rgba(0,0,0,0.1);
+        }
+
+        /* Цветовые акценты для карточек */
+        .card.type-combat { border-top-color: var(--combat-color); }
+        .card.type-form { border-top-color: var(--form-color); }
+        .card.type-theory { border-top-color: var(--theory-color); }
+
+        .card-header {
+            padding: 20px 20px 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .vol-badge {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 4px 8px;
+            border-radius: 4px;
+            color: white;
+        }
+        
+        .type-combat .vol-badge { background-color: var(--combat-color); }
+        .type-form .vol-badge { background-color: var(--form-color); }
+        .type-theory .vol-badge { background-color: var(--theory-color); }
+
+        .vol-num {
+            font-size: 0.9rem;
+            color: #999;
+            font-weight: bold;
+        }
+
+        .card-body {
+            padding: 0 20px 20px;
+            flex-grow: 1;
+        }
+
+        h2 {
+            margin: 0 0 10px;
+            font-size: 1.3rem;
+            color: #2d3436;
+        }
+        
+        h2 a { text-decoration: none; color: inherit; }
+        h2 a:hover { color: #000; text-decoration: underline; }
+
+        .desc {
+            font-size: 0.95rem;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .desc strong { color: #333; }
+
+        .practical-note {
+            background-color: #f8f9fa;
+            border-left: 3px solid #ddd;
+            padding: 8px 12px;
+            font-size: 0.85rem;
+            color: #444;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+        
+        .type-combat .practical-note { border-left-color: var(--combat-color); background-color: #fff5f5; }
+
+        .footer {
+            padding: 15px 20px;
+            background-color: #fafafa;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            text-align: center;
+            padding: 8px 0;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-html {
+            background-color: #2d3436;
+            color: white;
+        }
+        .btn-html:hover { background-color: #000; }
+
+        .btn-pdf {
+            background-color: transparent;
+            color: #d63031;
+            border: 1px solid #d63031;
+            max-width: 60px;
+        }
+        .btn-pdf:hover { background-color: #d63031; color: white; }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Encyclopedia of Taekwon-Do</h1>
+    <p>Навигация по 15 томам. Цвета указывают на практическую полезность тома.</p>
+    <div style="margin-top: 15px; font-size: 0.9rem;">
+        <span style="color: #d63031; font-weight: bold; margin-right: 15px;">● БОЕВАЯ БАЗА (Самое полезное)</span>
+        <span style="color: #0984e3; font-weight: bold; margin-right: 15px;">● ТУЛИ (Техника/Форма)</span>
+        <span style="color: #636e72; font-weight: bold;">● ТЕОРИЯ</span>
+    </div>
+</header>
+
+<div class="container">
+
+    <div class="card type-theory">
+        <div class="card-header">
+            <span class="vol-badge">Теория</span>
+            <span class="vol-num">ТОМ 1</span>
+        </div>
+        <div class="card-body">
+            <h2><a href="vol01.html">Философия и Мощность</a></h2>
+            <div class="desc">
+                Вводная часть. "Теория мощности" — физика удара (масса, скорость, дыхание). 
+            </div>
+            <div class="practical-note">
+                Полезно прочитать "Теорию мощности", чтобы понять, зачем нужна "волна" (Sine Wave) и как дышать, чтобы удар был жестким.
+            </div>
+        </div>
+        <div class="footer">
+            <a href="vol01.html" class="btn btn-html">Открыть</a>
+            <a href="vol01.pdf" class="btn btn-pdf" target="_blank">PDF</a>
+        </div>
+    </div>
+
+    <div class="card type-combat">
+        <div class="card-header">
+            <span class="vol-badge">БИОМЕХАНИКА</span>
+            <span class="vol-num">ТОМ 2</span>
+        </div>
+        <div class="card-body">
+            <h2><a href="vol02.html">Анатомия удара</a></h2>
+            <div class="desc">
+                <strong>Самый важный том для постановки техники.</strong> Описывает "Инструменты атаки и защиты". 
+            </div>
+            <div class="practical-note">
+                Учит, какой костью бить (кулак, ребро, пятка), как сжимать руку, чтобы не сломать пальцы, и какие бывают стойки для устойчивости. Читать обязательно.
+            </div>
+        </div>
+        <div class="footer">
+            <a href="vol02.html" class="btn btn-html">Открыть</a>
+            <a href="vol02.pdf" class="btn btn-pdf" target="_blank">PDF</a>
+        </div>
+    </div>
+
+    <div class="card type-form">
+        <div class="card-header">
+            <span class="vol-badge">ТУЛИ</span>
+            <span class="vol-num">ТОМ 3</span>
+        </div>
+        <div class="card-body">
+            <h2><a href="vol03.html">База (Белый - Желтый)</a></h2>
+            <div class="desc">
+                Саджу-Джируги и первые тули: Чон-Джи, Дан-Гун, До-Сан.
+            </div>
+            <div class="practical-note">
+                Нужны для наработки "движка": как переносить вес тела и разворачивать бедра при ударе.
+            </div>
+        </div>
+        <div class="footer">
+            <a href="vol03.html" class="btn btn-html">Открыть</a>
+            <a href="vol03.pdf" class="btn btn-pdf" target="_blank">PDF</a>
+        </div>
+    </div>
+
+    <div class="card type-form">
+        <div class="card-header">
+            <span class="vol-badge">ТУЛИ</span>
+            <span class="vol-num">ТОМ 4</span>
+        </div>
+        <div class="card-body">
+            <h2><a href="vol04.html">Зеленый пояс</a></h2>
+            <div class="desc">
+                Вон-Хё, Юль-Гок, Джун-Гун.
+            </div>
+            <div class="practical-note">
+                Появляются сложные удары локтем и ребром ладони. Формальные комплексы для сдачи экзаменов.
+            </div>
+        </div>
+        <div class="footer">
+            <a href="vol04.html" class="btn btn-html">Открыть</a>
+            <a href="vol04.pdf" class="btn btn-pdf" target="_blank">PDF</a>
+        </div>
+    </div>
+
+    <div class="card type-form">
+        <div class="card-header">
+            <span class="vol-badge">ТУЛИ</span>
+            <span class="vol-num">ТОМ 5</span>
+        </div>
+        <div class="card-body">
+            <h2><a href="vol05.html">Синий пояс</a></h2>
+            <div class="desc">
+                Тэ-Гье, Хва-Ранг, Чунг-Му.
+            </div>
+            <div class="practical-note">
+                Включает удары ногами в прыжке и сложные развороты на 360 градусов. Развитие вестибулярного аппарата.
+            </div>
+        </div>
+        <div class="footer">
+            <a href="vol05.html" class="btn btn-html">Открыть</a>
+            <a href="vol05.pdf" class="btn btn-pdf" target="_blank">PDF</a>
+        </div>
+    </div>
+
+    <div class="card type-form">
+        <div class="card-header">
+            <span class="vol-badge">ТУЛИ</span>
+            <span class="vol-num">ТОМ 6</span>
+        </div>
+        <div class="card-body">
+            <h2><a href="vol06.html">Черный пояс (1 дан)</a></h2>
+            <div class="desc">
+                Кван-Гэ, По-Ун, Ге-Бэк.
+            </div>
+            <div class="practical-note">
+                Сложная координация. Нужны, если вы планируете получать или подтверждать мастерскую степень.
+            </div>
+        </div>
+        <div class="footer">
+            <a href="vol06.html" class="btn btn-html">Открыть</a>
+            <a href="vol06.pdf" class="btn btn-pdf" target="_blank">PDF</a>
+        </div>
+    </div>
+
+    <div class="card type-form">
+        <div class="card-header">
+            <span class="vol-badge">ТУЛИ</span>
+            <span class="vol-num">ТОМ 7</span>
+        </div>
+        <div class="card-body">
+            <h2><a href="vol07.html">Черный пояс (2 дан)</a></h2>
+            <div class="desc">
+                Ый-Ам, Чунг-Джанг, Чуче.
+            </div>
+            <div class="practical-note">
+                Высокая техника ног и сложные балансы на одной ноге.
+            </div>
+        </div>
+        <div class="footer">
+            <a href="vol07.html" class="btn btn-html">Открыть</a>
+            <a href="vol07.pdf" class="btn btn-pdf" target="_blank">PDF</a>
+        </div>
+    </div>
+
+    <div class="card type-form">
+        <div class="card-header">
+            <span class="vol-badge">ТУЛИ</span>
+            <span class="vol-num">ТОМ 8</span>
+        </div>
+        <div class="card-body">
+            <h2><a href="vol08.html">3-й Дан</a></h2>
+            <div class="desc">
+                Сам-Иль, Ю-Син, Чхве-Ёнг.
+            </div>
+            <div class="practical-note">
+                Сугубо профессиональные комплексы для старших инструкторов.
+            </div>
+        </div>
+        <div class="footer">
+            <a href="vol08.html" class="btn btn-html">Открыть</a>
+            <a href="vol08.pdf" class="btn btn-pdf" target="_blank">PDF</a>
+        </div>
+    </div>
+
+    <div class="card type-form">
+        <div class="card-header">
+            <span class="vol-badge">ТУЛИ</span>
+            <span class="vol-num">ТОМ 9</span>
+        </div>
+        <div class="card-body">
+            <h2><a href="vol09.html">4-й Дан</a></h2>
+            <div class="desc">
+                Йон-Гэ, Уль-Чи, Мун-Му.
+            </div>
+            <div class="practical-note">
+                Специфическая техника.
+            </div>
+        </div>
+        <div class="footer">
+            <a href="vol09.html" class="btn btn-html">Открыть</a>
+            <a href="vol09.pdf" class="btn btn-pdf" target="_blank">PDF</a>
+        </div>
+    </div>
+
+    <div class="card type-form">
+        <div class="card-header">
+            <span class="vol-badge">ТУЛИ</span>
+            <span class="vol-num">ТОМ 10</span>
+        </div>
+        <div class="card-body">
+            <h2><a href="vol10.html">Высшие Даны</a></h2>
+            <div class="desc">
+                Со-Сан, Се-Джонг, Тонг-Иль.
+            </div>
+            <div class="practical-note">
+                Последние тули в системе. Интересны только как "музейный экспонат" сложнейшей техники.
+            </div>
+        </div>
+        <div class="footer">
+            <a href="vol10.html" class="btn btn-html">Открыть</a>
+            <a href="vol10.pdf" class="btn btn-pdf" target="_blank">PDF</a>
+        </div>
+    </div>
+
+    <div class="card type-combat">
+        <div class="card-header">
+            <span class="vol-badge">БОЙ</span>
+            <span class="vol-num">ТОМ 11</span>
+        </div>
+        <div class="card-body">
+            <h2><a href="vol11.html">Система Спарринга</a></h2>
+            <div class="desc">
+                Вся суть спортивного и учебного поединка (Матсоги).
+            </div>
+            <div class="practical-note">
+                <strong>Очень полезно:</strong> тайминг, чувство дистанции, как переходить от защиты к атаке, углы смещений с линии атаки.
+            </div>
+        </div>
+        <div class="footer">
+            <a href="vol11.html" class="btn btn-html">Открыть</a>
+            <a href="vol11.pdf" class="btn btn-pdf" target="_blank">PDF</a>
+        </div>
+    </div>
+
+    <div class="card type-combat">
+        <div class="card-header">
+            <span class="vol-badge">САМООБОРОНА</span>
+            <span class="vol-num">ТОМ 12</span>
+        </div>
+        <div class="card-body">
+            <h2><a href="vol12.html">Хосинсуль (Улица)</a></h2>
+            <div class="desc">
+                Прикладная техника против невооруженного и вооруженного противника.
+            </div>
+            <div class="practical-note">
+                Реальные захваты, освобождения, броски, болевые на суставы и удары в уязвимые точки (пах, глаза, горло).
+            </div>
+        </div>
+        <div class="footer">
+            <a href="vol12.html" class="btn btn-html">Открыть</a>
+            <a href="vol12.pdf" class="btn btn-pdf" target="_blank">PDF</a>
+        </div>
+    </div>
+
+    <div class="card type-combat">
+        <div class="card-header">
+            <span class="vol-badge">СИЛА</span>
+            <span class="vol-num">ТОМ 13</span>
+        </div>
+        <div class="card-body">
+            <h2><a href="vol13.html">Разбивание (Кёкпа)</a></h2>
+            <div class="desc">
+                Техника разбивания досок и черепицы. Спецтехника (удары в полете).
+            </div>
+            <div class="practical-note">
+                Полезно для понимания фокусировки удара. Если удар поставлен неправильно — сломаешь руку, а не доску. Учит концентрации.
+            </div>
+        </div>
+        <div class="footer">
+            <a href="vol13.html" class="btn btn-html">Открыть</a>
+            <a href="vol13.pdf" class="btn btn-pdf" target="_blank">PDF</a>
+        </div>
+    </div>
+
+    <div class="card type-theory">
+        <div class="card-header">
+            <span class="vol-badge">Анализ</span>
+            <span class="vol-num">ТОМ 14</span>
+        </div>
+        <div class="card-body">
+            <h2><a href="vol14.html">Сравнение стилей</a></h2>
+            <div class="desc">
+                Сравнение биомеханики Тхэквондо и Карате/Кунг-фу.
+            </div>
+            <div class="practical-note">
+                Для общего развития. Объясняет, почему в Тхэквондо используется "волна", а в Карате — нет.
+            </div>
+        </div>
+        <div class="footer">
+            <a href="vol14.html" class="btn btn-html">Открыть</a>
+            <a href="vol14.pdf" class="btn btn-pdf" target="_blank">PDF</a>
+        </div>
+    </div>
+
+    <div class="card type-theory">
+        <div class="card-header">
+            <span class="vol-badge">Словарь</span>
+            <span class="vol-num">ТОМ 15</span>
+        </div>
+        <div class="card-body">
+            <h2><a href="vol15.html">Термины</a></h2>
+            <div class="desc">
+                Энциклопедический словарь всех терминов.
+            </div>
+            <div class="practical-note">
+                Полезно, если забыл, что такое "Ап Джумок" или "Сонкаль".
+            </div>
+        </div>
+        <div class="footer">
+            <a href="vol15.html" class="btn btn-html">Открыть</a>
+            <a href="vol15.pdf" class="btn btn-pdf" target="_blank">PDF</a>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
